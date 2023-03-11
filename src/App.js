@@ -27,7 +27,7 @@ function App() {
     } else {
       setApiData({ apiStatus: 1, data: res, error: null });
     }
-    console.log(res);
+    setSearchTerm("");
   };
   return (
     <div className="App container">
