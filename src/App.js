@@ -4,16 +4,16 @@ import "./App.css";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [apidata, setApiData] = useState({
-    apiStatus: 0,
+    apiStatus: null,
     data: null,
-    error: null,
-    flag: false,
+    error: "No Data Found!",
   });
 
   const handleSubmit = () => {
     getData();
   };
   const getData = async () => {
+    setApiData({ apiStatus: 0, data: null, error: null, flag: true });
     let req = await fetch(
       "https://www.omdbapi.com/?t=" + searchTerm + "&plot=full&apikey=8c6abc5a"
     );
@@ -23,10 +23,9 @@ function App() {
         apiStatus: -1,
         data: null,
         error: "No Data Found!",
-        flag: true,
       });
     } else {
-      setApiData({ apiStatus: 1, data: res, error: null, flag: true });
+      setApiData({ apiStatus: 1, data: res, error: null });
     }
     console.log(res);
   };
@@ -47,7 +46,7 @@ function App() {
           <button className="btn btn-primary">Search</button>
         </div>
       </div>
-      {apidata.apiStatus === 1 && (
+      {apidata?.apiStatus === 1 && apidata?.data && (
         <div>
           <h2 className="text-center">{apidata.data.Title}</h2>
           <div className="container data-container">
@@ -95,10 +94,10 @@ function App() {
           </div>
         </div>
       )}
-      {apidata.apiStatus === -1 && (
+      {apidata?.apiStatus === -1 && (
         <h3 className="text-center">{apidata.error}</h3>
       )}
-      {apidata.apiStatus === 0 && apidata.flag && (
+      {apidata?.apiStatus === 0 && (
         <div className="loader">
           <div class="lds-ripple">
             <div></div>
